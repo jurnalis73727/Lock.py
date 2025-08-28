@@ -1,4 +1,4 @@
-name: Build Python EXE 32+64-bit
+name: Build Lock EXE 32+64-bit
 
 on:
   workflow_dispatch:
@@ -11,10 +11,10 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        arch: [x64, x86]  # 64-bit dan 32-bit
+        arch: [x64, x86]  # x64 = 64-bit, x86 = 32-bit
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Install Python
@@ -25,15 +25,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install pyinstaller
-        # Tambahkan library lain jika script memerlukan, misal: pip install pygame requests
+        pip install pyinstaller keyboard pywin32
 
     - name: Build EXE
       run: |
-        pyinstaller --onefile NAMA_SCRIPT.py  # Ganti NAMA_SCRIPT.py dengan nama script Python kamu
+        pyinstaller --onefile Lock.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: exe-${{ matrix.arch }}
+        name: lock-${{ matrix.arch }}
         path: dist/Lock.exe
