@@ -1,0 +1,34 @@
+name: Build EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        pip install pyinstaller
+
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile lock.py
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: lock-exe
+        path: dist/lock.exe
